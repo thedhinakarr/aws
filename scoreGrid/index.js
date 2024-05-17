@@ -8,9 +8,22 @@ const httpPort = 80;
 const httpsPort = 443;
 
 const httpServer = http.createServer((req, res) => {
-  const httpsUrl = `https://${req.headers.host}${req.url}`;
-  res.writeHead(301, { Location: httpsUrl });
-  res.end();
+  const parsedUrl = url.parse(req.url, true);
+
+  if (req.method == 'GET' && parsedUrl.path == '/') {
+    try {
+      res.statusCode = 200;
+      res.setHeader('content-type', 'text')
+      res.end("HOI");
+    } catch (error) {
+      console.log(error);
+      res.statusCode = 500;
+      res.end('Internal Server Error');
+    }
+  } else {
+    res.statusCode = 404;
+    res.end('Not found');
+  }
 });
 
 const httpsServer = https.createServer(
