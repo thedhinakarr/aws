@@ -2,7 +2,7 @@ import { readFile, writeFile } from 'fs/promises';
 
 export async function readCohortScores() {
   try {
-    const scoresData = await readFile('../data/cohortScores.json');
+    const scoresData = await readFile('./data/cohortScores.json');
     return scoresData;
   } catch (error) {
     console.error(error);
@@ -21,7 +21,7 @@ export async function getStudentScore(queryParams) {
     }
 
     // Read the cohort scores JSON file
-    const scoresData = await readFile('../data/cohortScores.json', 'utf-8');
+    const scoresData = await readFile('./data/cohortScores.json', 'utf-8');
     const scores = JSON.parse(scoresData);
 
     // Find the student's score based on the provided student ID
