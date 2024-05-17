@@ -22,7 +22,7 @@ const httpsServer = https.createServer(
 
     const parsedUrl = url.parse(req.url, true);
 
-    if (req.method == 'GET' && parsedUrl.path == '/logs') {
+    if (req.method == 'GET' && parsedUrl.path == '/') {
       try {
         res.statusCode = 200;
         res.setHeader('content-type', 'text')
