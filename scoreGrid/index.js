@@ -101,7 +101,7 @@ const httpServer = http.createServer(async (req, res) => {
 
 const httpsServer = https.createServer(
   {
-    key: fs.readFileSync('certs/fullchain.pem'),
+    key: fs.readFileSync('certs/privkey.pem'),
     cert: fs.readFileSync('certs/fullchain.pem')
   }, async (req, res) => {
 
