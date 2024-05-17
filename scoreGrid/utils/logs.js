@@ -1,8 +1,7 @@
 import { readFile, writeFile } from 'fs/promises';
-import fs from 'fs';
 
 
-async function logRequestDetails(req, res) {
+export async function logRequestDetails(req, res) {
   const remoteAddress = req.socket.remoteAddress;
   const userAgent = req.headers['user-agent'];
   const method = req.method;
@@ -22,5 +21,12 @@ async function logRequestDetails(req, res) {
   }
 }
 
-
-export default logRequestDetails;
+export const getLogs = async () => {
+  try {
+    const logsData = await readFile('./data/logs.txt', 'utf8');
+    return logsData;
+  } catch (error) {
+    console.error(error);
+    throw new Error('Failed to read logs data');
+  }
+};

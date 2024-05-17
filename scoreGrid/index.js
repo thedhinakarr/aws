@@ -1,38 +1,19 @@
-import { readFile, writeFile } from 'fs/promises';
 import fs from 'fs';
 import http from 'http';
 import https from 'https';
 import url from 'url';
 
-
-import logRequestDetails from './utils/logRequestDetails.js'
+import { logRequestDetails, getLogs } from './utils/logs.js'
+import { getStudentScore, readCohortScores } from './utils/getLeaderBoardData.js';
+import { getReport } from './utils/getReport.js';
 
 const httpPort = 80;
 const httpsPort = 443;
 
-const httpServer = http.createServer(async (req, res) => {
-  await logRequestDetails(req, res);
-
-  const parsedUrl = url.parse(req.url, true);
-
-  if (req.method == 'GET' && parsedUrl.path == '/logs') {
-    try {
-      let logsData = await readFile('./data/logs.txt');
-      logsData = logsData.toString();
-
-      res.statusCode = 200;
-      res.setHeader('content-type', 'text')
-      res.end(logsData);
-
-    } catch (error) {
-      console.log(error);
-      res.statusCode = 500;
-      res.end('Internal Server Error');
-    }
-  } else {
-    res.statusCode = 404;
-    res.end('Not found');
-  }
+const httpServer = http.createServer((req, res) => {
+  const httpsUrl = `https://${req.headers.host}${req.url}`;
+  res.writeHead(301, { Location: httpsUrl });
+  res.end();
 });
 
 const httpsServer = https.createServer(
@@ -40,42 +21,72 @@ const httpsServer = https.createServer(
     key: fs.readFileSync('certs/privkey.pem'),
     cert: fs.readFileSync('certs/fullchain.pem')
   }, async (req, res) => {
+
+    console.log(
+      `request received for ${req.url} from ${req.socket.remoteAddress}`
+    );
+
     await logRequestDetails(req, res);
 
     const parsedUrl = url.parse(req.url, true);
+    const queryParams = parsedUrl.query;
 
-    if (req.method == 'GET' && parsedUrl.path == '/logs') {
-      try {
-        let logsData = await readFile('./data/logs.txt');
-        logsData = logsData.toString();
+    if (req.method === 'GET') {
+      if (parsedUrl.pathname === '/logs') {
+        try {
+          let logsData = await getLogs();
+          logsData = logsData.toString();
+          res.statusCode = 200;
+          res.setHeader('content-type', 'text');
+          res.end(logsData);
+        } catch (error) {
+          console.error(error);
+          res.statusCode = 500;
+          res.end('Internal Server Error');
+        }
+      } else if (parsedUrl.pathname === '/leaderboard') {
+        if (queryParams && queryParams.studentname) {
+          console.log(queryParams.studentname);
+          let result = await getStudentScore(queryParams);
+          console.log(result);
+          res.statusCode = 200;
+          res.setHeader('content-type', 'application/json');
+          res.end(JSON.stringify(result));
+        } else {
+          try {
+            let scoresData = await readCohortScores();
+            res.statusCode = 200;
+            res.setHeader('content-type', 'application/json');
+            res.end(scoresData);
+          } catch (error) {
+            console.error(error);
+            res.statusCode = 500;
+            res.end('Internal Server Error');
+          }
+        }
+      } else if (parsedUrl.pathname === '/report') {
+        if (queryParams && queryParams.studentname) {
 
-        res.statusCode = 200;
-        res.setHeader('content-type', 'text')
-        res.end(logsData);
-
-      } catch (error) {
-        console.log(error);
-        res.statusCode = 500;
-        res.end('Internal Server Error');
-      }
-    } else if (req.method == 'GET' && parsedUrl.path == '/leaderboard') {
-      try {
-        let logsData = await readFile('./data/cohortScores.json');
-        res.statusCode = 200;
-        res.setHeader('content-type', 'data/json')
-        res.end(logsData);
-
-      } catch (error) {
-        console.log(error);
-        res.statusCode = 500;
-        res.end('Internal Server Error');
+          let reportData = await getReport(queryParams);
+          // Set headers to indicate a downloadable PDF file
+          res.setHeader('Content-Disposition', 'inline');
+          res.setHeader('Content-Type', 'application/pdf');
+          // Send the PDF data in the response
+          res.statusCode = 200;
+          res.end(reportData);
+        } else {
+          res.statusCode = 500;
+          res.setHeader('content-type', 'text');
+          res.end("Need params.");
+        }
+      } else {
+        res.statusCode = 404;
+        res.end('Not found');
       }
     } else {
       res.statusCode = 404;
       res.end('Not found');
     }
-
-
 
   });
 
