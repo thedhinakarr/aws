@@ -10,7 +10,7 @@ export async function getReport(queryParams) {
     }
 
     // Construct the file path based on the reportName
-    let filePath = `data/reports/MAT3/${reportName}.pdf`;
+    let filePath = `../data/reports/MAT3/${reportName}.pdf`;
 
     // Read the PDF file
     let reportData = await readFile(filePath);
