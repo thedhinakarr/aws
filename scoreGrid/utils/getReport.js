@@ -16,7 +16,7 @@ export async function getReport(queryParams) {
     let reportData = await readFile(filePath);
 
     // Read the PDF file
-    reportData = await readFile(filePath); cl
+    reportData = await readFile(filePath);
 
     return reportData;
   } catch (error) {

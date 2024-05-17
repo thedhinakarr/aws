@@ -25,7 +25,7 @@ export async function getStudentScore(queryParams) {
     const scores = JSON.parse(scoresData);
 
     // Find the student's score based on the provided student ID
-    const studentScore = scores.find(student => student.studentname === studentId);
+    const studentScore = scores.find(student => student.studentname.toLowerCase() === studentId.toLowerCase());
 
     if (!studentScore) {
       throw new Error('Student not found');

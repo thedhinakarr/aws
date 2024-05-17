@@ -32,7 +32,24 @@ const httpsServer = https.createServer(
     const queryParams = parsedUrl.query;
 
     if (req.method === 'GET') {
-      if (parsedUrl.pathname === '/logs') {
+      if (parsedUrl.pathname === '/') {
+        try {
+
+          res.statusCode = 200;
+          res.setHeader('content-type', 'application/json');
+          let options = {
+            "API 1": "/leaderboard",
+            "API 2": "/leaderboard?studentname=<name>",
+            "API 3": "/report?studentname=<name>"
+          }
+          res.end(JSON.stringify(options));
+        } catch (error) {
+          console.error(error);
+          res.statusCode = 500;
+          res.end('Internal Server Error');
+        }
+      }
+      else if (parsedUrl.pathname === '/logs') {
         try {
           let logsData = await getLogs();
           logsData = logsData.toString();
