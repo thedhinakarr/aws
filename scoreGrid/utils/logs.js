@@ -11,10 +11,10 @@ export async function logRequestDetails(req, res) {
   let log = [remoteAddress, userAgent, method, dateTime, url].join(' ');
 
   try {
-    let logsData = await readFile('data/logs.txt');
+    let logsData = await readFile('./data/logs.txt');
     logsData = logsData.toString();
     logsData += '\n' + log;
-    await writeFile('data/logs.txt', logsData);
+    await writeFile('./data/logs.txt', logsData);
 
   } catch (error) {
     throw error;
