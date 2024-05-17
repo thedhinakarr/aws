@@ -1,1 +1,72 @@
-[]
+[
+  {
+    "rank": 1,
+    "studentname": "Atanu",
+    "mgpa": [
+      10.00,
+      10.00,
+      10.00
+    ],
+    "cgpa": 10.00
+  },
+  {
+    "rank": 2,
+    "studentname": "Vishika",
+    "mgpa": [
+      9.57,
+      10.00,
+      10.00
+    ],
+    "cgpa": 9.92
+  },
+  {
+    "rank": 3,
+    "studentname": "Dhinakar",
+    "mgpa": [
+      9.50,
+      10.00,
+      10.00
+    ],
+    "cgpa": 9.90
+  },
+  {
+    "rank": 4,
+    "studentname": "Zoheb",
+    "mgpa": [
+      9.29,
+      10.00,
+      10.00
+    ],
+    "cgpa": 9.86
+  },
+  {
+    "rank": 5,
+    "studentname": "Utsav",
+    "mgpa": [
+      9.00,
+      9.93,
+      9.53
+    ],
+    "cgpa": 9.58
+  },
+  {
+    "rank": 6,
+    "studentname": "Henry",
+    "mgpa": [
+      9.71,
+      0.00,
+      9.00
+    ],
+    "cgpa": 5.81
+  },
+  {
+    "rank": 7,
+    "studentname": "Saad",
+    "mgpa": [
+      0.00,
+      0.00,
+      0.00
+    ],
+    "cgpa": 0.00
+  }
+]
