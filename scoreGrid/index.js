@@ -14,8 +14,6 @@ const httpsPort = 443;
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 console.log(__dirname);
 
-console.log(__dirname);
-
 const httpServer = http.createServer(async (req, res) => {
 
   console.log(
@@ -105,8 +103,8 @@ const httpServer = http.createServer(async (req, res) => {
 
 const httpsServer = https.createServer(
   {
-    key: fs.readFileSync('./certs/privkey.pem'),
-    cert: fs.readFileSync('./certs/fullchain.pem')
+    key: fs.readFileSync(`${__dirname}/certs/privkey.pem`),
+    cert: fs.readFileSync(`${__dirname}/certs/fullchain.pem`)
   }, async (req, res) => {
 
     console.log(
