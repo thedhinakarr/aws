@@ -2,7 +2,8 @@ import fs from 'fs';
 import http from 'http';
 import https from 'https';
 import url from 'url';
-
+import { fileURLToPath } from 'url';
+import path from 'path';
 import { logRequestDetails, getLogs } from './utils/logs.js'
 import { getStudentScore, readCohortScores } from './utils/getLeaderBoardData.js';
 import { getReport } from './utils/getReport.js';
@@ -10,7 +11,10 @@ import { getReport } from './utils/getReport.js';
 const httpPort = 80;
 const httpsPort = 443;
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+console.log(__dirname);
 
+console.log(__dirname);
 
 const httpServer = http.createServer(async (req, res) => {
 
