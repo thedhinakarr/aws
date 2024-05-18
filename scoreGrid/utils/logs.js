@@ -17,7 +17,8 @@ export async function logRequestDetails(req, res) {
     await writeFile('./data/logs.txt', logsData);
 
   } catch (error) {
-    throw error;
+    console.log(error);
+    return error;
   }
 }
 
@@ -27,6 +28,6 @@ export const getLogs = async () => {
     return logsData;
   } catch (error) {
     console.error(error);
-    throw new Error('Failed to read logs data');
+    return 'Failed to read logs data';
   }
 };

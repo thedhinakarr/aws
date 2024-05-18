@@ -6,7 +6,7 @@ export async function getReport(queryParams) {
     let reportName = queryParams && queryParams.studentname;
 
     if (!reportName) {
-      throw new Error('Report name is required');
+      return 'Report name is required';
     }
 
     // Construct the file path based on the reportName
@@ -21,6 +21,6 @@ export async function getReport(queryParams) {
     return reportData;
   } catch (error) {
     console.error(error);
-    throw new Error('Failed to get report');
+    return 'Failed to get report';
   }
 }

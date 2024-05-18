@@ -6,7 +6,7 @@ export async function readCohortScores() {
     return scoresData;
   } catch (error) {
     console.error(error);
-    throw new Error('Failed to read cohort scores data');
+    return new Error('Failed to read cohort scores data');
   }
 }
 
@@ -17,7 +17,7 @@ export async function getStudentScore(queryParams) {
     const studentId = queryParams && queryParams.studentname;
 
     if (!studentId) {
-      throw new Error('Student ID is required');
+      return 'Student name is required';
     }
 
     // Read the cohort scores JSON file
@@ -28,12 +28,12 @@ export async function getStudentScore(queryParams) {
     const studentScore = scores.find(student => student.studentname.toLowerCase() === studentId.toLowerCase());
 
     if (!studentScore) {
-      throw new Error('Student not found');
+      return 'Student not found';
     }
 
     return studentScore;
   } catch (error) {
     console.error(error);
-    throw new Error('Failed to get student score');
+    return 'Failed to get student score';
   }
 }
